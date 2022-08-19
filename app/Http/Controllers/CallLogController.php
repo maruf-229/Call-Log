@@ -22,4 +22,20 @@ class CallLogController extends Controller
             return view('backend.call_logs_view',compact('call_logs'));
         }
     }
+
+    public function updateStatus(Request $request,$id){
+        CallLog::findOrFail($id)->update([
+            'status' => $request->status
+        ]);
+        return redirect()->route('all_call_logs');
+    }
+
+    public function filetLogsByStatus(Request $request){
+        $status = $request->status;
+
+        if(!empty($status) ){
+            $call_logs = CallLog::where('status',$status)->latest()->get();
+            return view('backend.call_logs_view',compact('call_logs'));
+        }
+    }
 }

@@ -34,7 +34,9 @@ Route::middleware(['auth:admin'])->group(function (){
 
     Route::prefix('call-logs')->group(function (){
         Route::get('/view' , [CallLogController::class, 'view'])->name('all_call_logs');
-        Route::post('/view/filter' , [CallLogController::class, 'filetLogsByDate'])->name('search_by_date');
+        Route::post('/view/filter-date' , [CallLogController::class, 'filetLogsByDate'])->name('search_by_date');
+        Route::post('/status/update/{id}' , [CallLogController::class, 'updateStatus'])->name('update_status');
+        Route::post('/view/filter-status' , [CallLogController::class, 'filetLogsByStatus'])->name('filter_by_status');
     });
 
 });

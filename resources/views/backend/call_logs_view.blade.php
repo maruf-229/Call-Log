@@ -32,8 +32,24 @@
                                             <td>{{ $item->call_duration }}</td>
                                             <td>{{ $item->status }}</td>
                                             <td>
-                                                <a href="" class="btn btn-info" title="Edit Data"><i class="fa fa-pencil"></i></a>
-                                                <a href="" class="btn btn-danger" id="delete" title="Delete Data"><i class="fa fa-trash"></i></a>
+                                                <form action="{{ route('update_status',$item->id) }}" method="post">
+                                                    @csrf
+
+                                                    @if($item->status == 'in-call')
+                                                        <input type="hidden" name="status" class="form-control" value="hold">
+                                                        <input type="submit" class="btn btn-success" value="Hold">
+                                                    @elseif($item->status == 'hold')
+                                                        <input type="hidden" name="status" class="form-control" value="call-back">
+                                                        <input type="submit" class="btn btn-success" value="Call Back">
+                                                    @elseif($item->status == NULL)
+                                                        <input type="hidden" name="status" class="form-control" value="in-call">
+                                                        <input type="submit" class="btn btn-success" value="Call Now">
+                                                    @else
+                                                        <input type="hidden" name="status" class="form-control" value="don't_call">
+                                                        <input type="submit" class="btn btn-success" value="Do Not Call">
+                                                    @endif
+
+                                                </form>
                                             </td>
                                         </tr>
                                     @endforeach
@@ -70,6 +86,44 @@
                                         <div class="controls">
                                             <input type="date" name="date" class="form-control">
                                             @error('date')
+                                            <span class="text-danger">{{ $message }}</span>
+                                            @enderror
+                                        </div>
+                                    </div>
+
+                                    <div class="text-xs-right">
+                                        <input type="submit" class="btn btn-rounded btn-primary mb-5" value="Filter">
+                                    </div>
+                                </form>
+
+                            </div>
+                        </div>
+                        <!-- /.box-body -->
+                    </div>
+
+
+                    <div class="box">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">Filter Status</h3>
+                        </div>
+                        <!-- /.box-header -->
+                        <div class="box-body">
+                            <div class="table-responsive">
+
+                                <form action="{{ route('filter_by_status') }}" method="POST">
+                                    @csrf
+
+                                    <div class="form-group">
+                                        <h5>Select Status <span class="text-danger">*</span></h5>
+                                        <div class="controls">
+                                            <select name="status" class="form-control">
+                                                <option label="Choose One"></option>
+                                                <option value="in-call">In-Call</option>
+                                                <option value="hold">Hold</option>
+                                                <option value="call-back">Call-Back</option>
+                                                <option value="don't_call">Don't Call</option>
+                                            </select>
+                                            @error('year')
                                             <span class="text-danger">{{ $message }}</span>
                                             @enderror
                                         </div>
